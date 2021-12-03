@@ -45,9 +45,14 @@ ON o.id = p.branch_id
 INNER JOIN
     sales as q
 ON p.id = q.staff_id
+WHERE
+    q.year = :q.year,
+    p.name = :p.name
 
 EOM;
 $stmt = $dbh->prepare($sql4);
+$stmt->bindParam(':q.year', $year, PDO::PARAM_INT);
+$stmt->bindParam(':p.name', $branch, PDO::PARAM_STR);
 $stmt->execute();
 $bts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
