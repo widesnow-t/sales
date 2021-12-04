@@ -46,13 +46,12 @@ INNER JOIN
     sales as q
 ON p.id = q.staff_id
 WHERE
-    q.year = :q.year,
-    p.name = :p.name
-
+    year = :year
+    staff_id = :staff_id
 EOM;
 $stmt = $dbh->prepare($sql4);
-$stmt->bindParam(':q.year', $year, PDO::PARAM_INT);
-$stmt->bindParam(':p.name', $branch, PDO::PARAM_STR);
+$stmt->bindParam(':year', $year, PDO::PARAM_INT);
+$stmt->bindParam(':staff_id', $staff, PDO::PARAM_STR);
 $stmt->execute();
 $bts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -120,8 +119,6 @@ var_dump($year, $branch, $staff);
                     <?php endforeach; ?>
                 </tbody>
             </table>
-            <div class="total">合計：<p><?= $bt['sale'] ?>万円</p>
-            </div>
         </div>
 
     </div>
