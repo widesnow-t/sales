@@ -75,3 +75,8 @@ select {
     padding: 10px;
     margin-left: 40%;
 }
+.total{
+    font-size: 50px;
+    font-weight: bolder;
+    text-align: right;
+}

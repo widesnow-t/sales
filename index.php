@@ -36,7 +36,7 @@ SELECT
     q.month,
     p.name staff_id,
     o.name branch_id,
-    q.sale
+    FORMAT(q.sale,0) total
 FROM
     branches as o
 INNER JOIN
@@ -46,16 +46,18 @@ INNER JOIN
     sales as q
 ON p.id = q.staff_id
 WHERE
-    year = :year
-    staff_id = :staff_id
+    staff_id = :staff
+    or branch_id = :branch
+    or year = :year
 EOM;
 $stmt = $dbh->prepare($sql4);
 $stmt->bindParam(':year', $year, PDO::PARAM_INT);
-$stmt->bindParam(':staff_id', $staff, PDO::PARAM_STR);
+$stmt->bindParam(':staff', $staff, PDO::PARAM_INT);
+$stmt->bindParam(':branch', $branch, PDO::PARAM_INT);
 $stmt->execute();
 $bts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-var_dump($year, $branch, $staff);
+var_dump($year, $branch, $staff, $bts);
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -81,13 +83,13 @@ var_dump($year, $branch, $staff);
                     支店 <select name="branch">
                         <option value=""></option>
                         <?php foreach ($branches as $branch) : ?>
-                            <option value="<?= $branch['name'] ?>" <?= $selected['branch'][$branch['name']]; ?>><?= $branch['name'] ?></option>
+                            <option value="<?= $branch['id'] ?>" <?= $selected['branch'][$branch['id']]; ?>><?= $branch['name'] ?></option>
                         <?php endforeach; ?>
                     </select>
                     従業員 <select name="staff">
                         <option value=""></option>
                         <?php foreach ($staffs as $staff) : ?>
-                            <option value="<?= $staff['name'] ?>" <?= $selected['staff'][$staff['name']]; ?>><?= $staff['name'] ?></option>
+                            <option value="<?= $staff['id'] ?>" <?= $selected['staff'][$staff['id']]; ?>><?= $staff['name'] ?></option>
                         <?php endforeach; ?>
                     </select>
             </div>
@@ -114,11 +116,13 @@ var_dump($year, $branch, $staff);
                             <th><?= h($bt['month']) ?></th>
                             <th><?= h($bt['branch_id']) ?></th>
                             <th><?= h($bt['staff_id']) ?></th>
-                            <th><?= h($bt['sale']) ?></th>
+                            <th><?= h($bt['total']) ?></th>
+                            
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
             </table>
+            <p class="total">合計:<?= $sum = array_sum(array_column($bts, 'total'))?>万円</p>
         </div>
 
     </div>
