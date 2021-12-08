@@ -32,7 +32,7 @@ $selected['branch'][$branch ?: ""] = "selected";
 if ($year !='') {
         $sql4 = 'SELECT sa.year, sa.month, st.name staff_id, b.name branch_id, sa.sale total 
         FROM branches as b INNER JOIN staffs as st ON b.id = st.branch_id 
-        INNER JOIN sales as sa ON st.id = sa.staff_id WHERE year = :year';
+        INNER JOIN sales as sa ON st.id = sa.staff_id WHERE year = :year ORDER BY sa.year ASC, sa.month ASC, staff_id ASC, branch_id ASC';
         $stmt = $dbh->prepare($sql4);
         $stmt->bindParam(':year', $year, PDO::PARAM_STR);
         $stmt->execute(); }
