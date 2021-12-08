@@ -39,14 +39,14 @@ if ($year !='') {
 if ($branch !='') {
         $sql4 = 'SELECT sa.year, sa.month, st.name staff_id, b.name branch_id, sa.sale total 
         FROM branches as b INNER JOIN staffs as st ON b.id = st.branch_id 
-        INNER JOIN sales as sa ON st.id = sa.staff_id WHERE branch_id = :branch';
+        INNER JOIN sales as sa ON st.id = sa.staff_id WHERE branch_id = :branch ORDER BY sa.year ASC, sa.month ASC, staff_id ASC, branch_id ASC';
         $stmt = $dbh->prepare($sql4);
         $stmt->bindParam(':branch', $branch, PDO::PARAM_INT);
         $stmt->execute();}
 if ($staff !='') {
         $sql4 = 'SELECT sa.year, sa.month, st.name staff_id, b.name branch_id, sa.sale total 
         FROM branches as b INNER JOIN staffs as st ON b.id = st.branch_id 
-        INNER JOIN sales as sa ON st.id = sa.staff_id WHERE staff_id = :staff';
+        INNER JOIN sales as sa ON st.id = sa.staff_id WHERE staff_id = :staff ORDER BY sa.year ASC, sa.month ASC, staff_id ASC, branch_id ASC';
         $stmt = $dbh->prepare($sql4);
         $stmt->bindParam(':staff', $staff, PDO::PARAM_INT);
         $stmt->execute();
