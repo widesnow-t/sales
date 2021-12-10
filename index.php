@@ -61,7 +61,7 @@ if ($year || $branch || $staff) {
     $where = ' WHERE ' . $where;
 }
 $sql4 .= $where;
-$sql4 .= 'ORDER BY sa.year ASC, sa.month asc, staff_id ASC, branch_id ASC, total ASC';
+$sql4 .= ' ORDER BY sa.year ASC, sa.month asc, staff_id ASC, branch_id ASC, total ASC ';
 $stmt = $dbh->prepare($sql4);
 if ($year){$stmt->bindParam(':year', $year, PDO::PARAM_INT);}
 if ($staff){$stmt->bindParam(':staff', $staff, PDO::PARAM_INT);}
